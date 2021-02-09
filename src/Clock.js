@@ -1,5 +1,5 @@
 import React from 'react';
-import '/dev/twenty-five-and-five-clock/src/Clock.css';
+import './Clock.css';
 
 class Clock extends React.Component {
   constructor(props) {
@@ -152,7 +152,8 @@ class CountdownTimer extends React.Component {
       })
     }
     if (this.state.minutes == 0 && this.state.seconds == 0) {
-      console.log("zero - alarm will sound here")
+      console.log("zero - alarm will sound here");
+      document.getElementById("alarm").play();
       clearInterval(this.myCountdown);
       this.setState({
         minutes: "00",
@@ -201,6 +202,7 @@ class CountdownTimer extends React.Component {
         <div id="current-session">{this.state.inProgress}</div>
         <button id="start_stop" onClick={this.countdown}>Start</button>
         <button onClick={this.pause}>Pause</button>
+        <audio className="alarm" src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" type="audio/wav" id="alarm"> </audio>
       </div>
     )
   }

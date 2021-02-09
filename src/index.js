@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Clock from './Clock';
-import '/dev/twenty-five-and-five-clock/src/Clock.css'
+import Clock from './ClockExtra';
+import './Clock.css'
 
 
 
