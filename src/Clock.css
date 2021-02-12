@@ -1,27 +1,71 @@
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body{
-    background-color: rgb(163, 115, 163);
+    
     color: black;
+    /* background: url("/src/chuttersnap-zYvuRX4kIWE-unsplash.jpg"); */
+    
+    background: linear-gradient(90deg, rgb(247, 79, 79) 37%, rgba(255,103,103,1) 82%);
+    background-size: cover;
+    
+}
+
+#container{
+    height: 100vh;
+    margin: auto;
+    display: grid;
+    justify-content: center;
+    align-content: center;
 }
 
 button{
     border-radius: 20px;
-    background-color: rgb(163, 115, 163);
     margin: 10px;
     padding: 1em;
+    background-color: darkolivegreen;
+    color: white;
+    border: none;
 } 
+
+button:focus{
+    outline: none;
+    box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.781);
+    /* border: none; */
+    /* border:greenyellow; */
+}
 
 
 #central-block{
-    border-radius: 15%;
+    border-radius: 5%;
     padding: 20px;
     width: 400px;
-    margin:  50px auto;
-    background-color: whitesmoke;
-    border: 2px solid black;
+    max-width: 90vw;
+    margin: auto;
+    background-color: darkgray;
+    color: white;
+   
+    border: 2px solid rgb(85, 85, 85);
     text-align: center;
     
 }
 
+#adjustments{
+    display: flex;
+    justify-content: space-between;
+    /* margin-bottom: 40px; */
+}
+
 #time-left{
-    font-size: 50px;
+    font-size: 6em;
+    color: white;
+    margin: 40px auto;
+}
+
+#start_stop{
+    background-color: rgb(13, 173, 13);
+    color: white;
+    border: none;
 }
