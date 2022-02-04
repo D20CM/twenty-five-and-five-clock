@@ -1,6 +1,7 @@
 # Front End Libraries Projects - Build a 25 + 5 Clock
 
 ## Objective: Build a CodePen.io app that is functionally similar to this: https://codepen.io/freeCodeCamp/full/XpKrrW.
+<<<<<<< HEAD
 
 ### 25 + 5 Clock (Pomodoro Timer)
 
@@ -11,6 +12,8 @@ This was worked on as part of the [Free Code Camp](http://www.freecodecamp.org) 
 ![pomodoro timer screenshot](./images/screenshot.png)
 
 ### The FCC task guidelines and user stories
+=======
+>>>>>>> b78dbd2985ea2fca78c646b38173afcdc74d32a8
 
 Fulfill the below user stories and get all of the tests to pass. Give it your own personal style.
 
