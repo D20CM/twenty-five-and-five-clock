@@ -150,7 +150,7 @@ class CountdownTimer extends React.Component {
         seconds: this.leftFillNum(this.state.seconds - 1, 2),
       });
     } else if (
-      parseInt(this.state.seconds) === 0 &&
+      parseInt(this.state.seconds) == 0 &&
       parseInt(this.state.minutes) > 0
     ) {
       this.setState({
@@ -158,7 +158,7 @@ class CountdownTimer extends React.Component {
         seconds: 59,
       });
     }
-    if (this.state.minutes === 0 && this.state.seconds === 0) {
+    if (this.state.minutes == 0 && this.state.seconds == 0) {
       console.log("zero - alarm will sound here");
       document.getElementById("alarm").play();
       clearInterval(this.myCountdown);

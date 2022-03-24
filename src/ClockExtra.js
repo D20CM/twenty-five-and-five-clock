@@ -255,14 +255,20 @@ class CountdownTimer extends React.Component {
         minutes: this.leftFillNum(this.state.minutes - 1, 2),
         seconds: 59,
       });
-    } else if (this.state.minutes === 0 && this.state.seconds >= 0) {
+    } else if (
+      parseInt(this.state.minutes) === 0 &&
+      parseInt(this.state.seconds) >= 0
+    ) {
       document.getElementById("time-left").style.color = "Red";
       this.setState({
         seconds: this.leftFillNum(this.state.seconds - 1, 2),
       });
     }
 
-    if (this.state.minutes === 0 && this.state.seconds === -1) {
+    if (
+      parseInt(this.state.minutes) === 0 &&
+      parseInt(this.state.seconds) === -1
+    ) {
       console.log("zero - alarm will sound here");
       console.log(this.state.inProgress + "at alarm sound");
       document.getElementById("beep").play();
