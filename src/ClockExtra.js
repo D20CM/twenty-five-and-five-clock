@@ -38,7 +38,7 @@ class Clock extends React.Component {
     console.log(this.state.inProgress);
     if (
       !currentCountdownTimer.state.running &&
-      currentCountdownTimer.state.inProgress == "session"
+      currentCountdownTimer.state.inProgress === "session"
     ) {
       let minutes = parseInt(this.state.minutes);
       minutes++;
@@ -62,7 +62,7 @@ class Clock extends React.Component {
 
     if (
       !currentCountdownTimer.state.running &&
-      currentCountdownTimer.state.inProgress == "session"
+      currentCountdownTimer.state.inProgress === "session"
     ) {
       let minutes = parseInt(this.state.minutes);
       minutes--;
