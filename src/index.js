@@ -4,7 +4,7 @@ import "./index.css";
 import Clock from "./ClockExtra";
 import "./Clock.css";
 
-//test git
+//test git remote access
 
 ReactDOM.render(
   <React.StrictMode>
