@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import "./Clock.css";
 
 function Clock() {
@@ -19,22 +19,44 @@ function Clock() {
   //   }
   // }, [isRunning, totalTime, decrementTotalTime]);
 
+  const countdown = useRef(totalTime);
+
+  const timer = () => {
+    countdown.current = setInterval(() => decrementTotalTime(), 1000);
+  };
+
   function decrementTotalTime() {
-    setTotalTime((totalTime) => totalTime - 1);
-    console.log(totalTime);
+    console.log("check");
+    countdown.current--;
+    console.log(countdown.current);
   }
 
   function handleStart() {
-    setIsRunning(true);
-    setInterval(() => decrementTotalTime, 1000);
-    console.log("start");
+    if (!isRunning) {
+      setIsRunning(true);
+      console.log("start");
+      timer();
+    }
   }
 
   function handleStop() {
-    setIsRunning(false);
-    clearInterval(setTotalTime(0));
-    console.log("stop");
+    if (isRunning) {
+      setIsRunning(false);
+      console.log("stop");
+      // console.log(countdown.current);
+      clearInterval(countdown.current);
+    }
   }
+
+  useEffect(() => {
+    // if (countdown.current > 0) {
+    //   console.log("still counting");
+    //   timer();
+    // }
+    if (countdown.current < 1) {
+      clearInterval(countdown.current);
+    }
+  }, []);
 
   return (
     <div id="container">
@@ -75,7 +97,7 @@ function Clock() {
         </div>
         {/* <CountdownTimer time={this.state.displayText}/> */}
         <div id="countdown-timer">
-          <div id="time-left">{totalTime}</div>
+          <div id="time-left">{countdown.current}</div>
           <button
             id="start_stop"
             onClick={() => (isRunning ? handleStop() : handleStart())}
