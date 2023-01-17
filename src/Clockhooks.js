@@ -4,8 +4,6 @@ import "./Clock.css";
 function Clock() {
   const [sessionTime, setSessionTime] = useState(10);
   const [breakTime, setBreakTime] = useState(5);
-  // const [minutes, setMinutes] = useState("10");
-  // const [seconds, setSeconds] = useState("00");
   const [sessionType, setSessionType] = useState("session");
   const [totalTime, setTotalTime] = useState(5);
   const [isRunning, setIsRunning] = useState(false);
@@ -31,17 +29,27 @@ function Clock() {
       : setTotalTime(breakTime * 60);
   }, [sessionTime, breakTime, sessionType]);
 
+  useEffect(() => {
+    isRunning
+      ? console.log("start " + sessionType)
+      : console.log("stop " + sessionType);
+  }, [sessionType, isRunning]);
+
   function decrementTotalTime() {
     if (totalTime > 0) {
       setTotalTime((totalTime) => totalTime - 1);
+      if (totalTime <= 60) {
+        document.getElementById("time-left").style.color = "Red";
+      }
     } else {
       console.log("finished");
-      // setIsRunning(false);
       clearInterval(intervalRef.current);
-      //sound alarm
+      document.getElementById("beep").play();
       sessionType === "session"
         ? setSessionType("break")
         : setSessionType("session");
+      document.getElementById("time-left").style.color = "";
+
       handleStart();
     }
   }
@@ -49,7 +57,6 @@ function Clock() {
   function handleStart() {
     if (!isRunning) {
       setIsRunning(true);
-      console.log("start " + sessionType);
     }
   }
 
@@ -65,25 +72,24 @@ function Clock() {
     clearInterval(intervalRef.current);
     setTotalTime(sessionTime * 60);
     setSessionType("session");
+    document.getElementById("time-left").style.color = "";
+    document.getElementById("beep").pause();
+    document.getElementById("beep").currentTime = 0;
   }
 
   function decrementSession() {
-    setSessionTime((sessionTime) => sessionTime - 1);
-    console.log("decrement session");
+    sessionTime > 1 && setSessionTime((sessionTime) => sessionTime - 1);
   }
 
   function incrementSession() {
     setSessionTime((sessionTime) => sessionTime + 1);
-    console.log("increment session");
   }
   function decrementBreak() {
-    setBreakTime((breakTime) => breakTime - 1);
-    console.log("decrement break");
+    breakTime > 1 && setBreakTime((breakTime) => breakTime - 1);
   }
 
   function incrementBreak() {
     setBreakTime((breakTime) => breakTime + 1);
-    console.log("increment break");
   }
 
   return (
@@ -111,7 +117,7 @@ function Clock() {
             </button>
           </div>
         </div>
-        {/* <CountdownTimer time={this.state.displayText}/> */}
+
         <div id="countdown-timer">
           <div id="time-left">
             {((totalTime - (totalTime % 60)) / 60).toString().padStart(2, 0)}:
