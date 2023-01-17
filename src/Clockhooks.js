@@ -7,56 +7,52 @@ function Clock() {
   const [minutes, setMinutes] = useState("10");
   const [seconds, setSeconds] = useState("00");
   const [inProgress, setInProgress] = useState("session");
-  const [totalTime, setTotalTime] = useState(600);
+  const [totalTime, setTotalTime] = useState(5);
   const [isRunning, setIsRunning] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("started: ", totalTime);
-  //   if (isRunning) {
-  //     const countdown = setInterval(() => decrementTotalTime, 1000);
+  const intervalRef = useRef();
 
-  //     return () => clearInterval(countdown);
-  //   }
-  // }, [isRunning, totalTime, decrementTotalTime]);
+  useEffect(() => {
+    if (isRunning) {
+      const id = setInterval(() => {
+        decrementTotalTime();
+      }, 1000);
 
-  const countdown = useRef(totalTime);
-
-  const timer = () => {
-    countdown.current = setInterval(() => decrementTotalTime(), 1000);
-  };
+      intervalRef.current = id;
+    }
+    return () => {
+      clearInterval(intervalRef.current);
+    };
+  });
 
   function decrementTotalTime() {
-    console.log("check");
-    countdown.current--;
-    console.log(countdown.current);
+    if (totalTime > 0) {
+      setTotalTime((totalTime) => totalTime - 1);
+    } else {
+      console.log("finished");
+      setIsRunning(false);
+      clearInterval(intervalRef.current);
+    }
   }
+
+  // let timer = () => {
+  //   setInterval(() => {
+  //     decrementTotalTime();
+  //   }, 1000);
+  // };
 
   function handleStart() {
     if (!isRunning) {
       setIsRunning(true);
       console.log("start");
-      timer();
     }
   }
 
   function handleStop() {
-    if (isRunning) {
-      setIsRunning(false);
-      console.log("stop");
-      // console.log(countdown.current);
-      clearInterval(countdown.current);
-    }
+    setIsRunning(false);
+    console.log("stop");
+    clearInterval(intervalRef.current);
   }
-
-  useEffect(() => {
-    // if (countdown.current > 0) {
-    //   console.log("still counting");
-    //   timer();
-    // }
-    if (countdown.current < 1) {
-      clearInterval(countdown.current);
-    }
-  }, []);
 
   return (
     <div id="container">
@@ -97,13 +93,15 @@ function Clock() {
         </div>
         {/* <CountdownTimer time={this.state.displayText}/> */}
         <div id="countdown-timer">
-          <div id="time-left">{countdown.current}</div>
+          <div id="time-left">{totalTime}</div>
           <button
             id="start_stop"
-            onClick={() => (isRunning ? handleStop() : handleStart())}
+            // onClick={() => (isRunning ? handleStop() : handleStart())}
+            onClick={() => handleStart()}
           >
             Start/Pause
           </button>
+          <button onClick={() => handleStop()}>stop</button>
           <div id="timer-label">{inProgress}</div>
 
           <audio
