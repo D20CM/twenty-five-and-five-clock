@@ -4,9 +4,9 @@ import "./Clock.css";
 function Clock() {
   const [sessionTime, setSessionTime] = useState(10);
   const [breakTime, setBreakTime] = useState(5);
-  const [minutes, setMinutes] = useState("10");
-  const [seconds, setSeconds] = useState("00");
-  const [inProgress, setInProgress] = useState("session");
+  // const [minutes, setMinutes] = useState("10");
+  // const [seconds, setSeconds] = useState("00");
+  const [sessionType, setSessionType] = useState("session");
   const [totalTime, setTotalTime] = useState(5);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -25,26 +25,31 @@ function Clock() {
     };
   });
 
+  useEffect(() => {
+    sessionType === "session"
+      ? setTotalTime(sessionTime * 60)
+      : setTotalTime(breakTime * 60);
+  }, [sessionTime, breakTime, sessionType]);
+
   function decrementTotalTime() {
     if (totalTime > 0) {
       setTotalTime((totalTime) => totalTime - 1);
     } else {
       console.log("finished");
-      setIsRunning(false);
+      // setIsRunning(false);
       clearInterval(intervalRef.current);
+      //sound alarm
+      sessionType === "session"
+        ? setSessionType("break")
+        : setSessionType("session");
+      handleStart();
     }
   }
-
-  // let timer = () => {
-  //   setInterval(() => {
-  //     decrementTotalTime();
-  //   }, 1000);
-  // };
 
   function handleStart() {
     if (!isRunning) {
       setIsRunning(true);
-      console.log("start");
+      console.log("start " + sessionType);
     }
   }
 
@@ -54,6 +59,33 @@ function Clock() {
     clearInterval(intervalRef.current);
   }
 
+  function handleReset() {
+    setIsRunning(false);
+    console.log("reset");
+    clearInterval(intervalRef.current);
+    setTotalTime(sessionTime * 60);
+    setSessionType("session");
+  }
+
+  function decrementSession() {
+    setSessionTime((sessionTime) => sessionTime - 1);
+    console.log("decrement session");
+  }
+
+  function incrementSession() {
+    setSessionTime((sessionTime) => sessionTime + 1);
+    console.log("increment session");
+  }
+  function decrementBreak() {
+    setBreakTime((breakTime) => breakTime - 1);
+    console.log("decrement break");
+  }
+
+  function incrementBreak() {
+    setBreakTime((breakTime) => breakTime + 1);
+    console.log("increment break");
+  }
+
   return (
     <div id="container">
       <div id="central-block">
@@ -61,48 +93,38 @@ function Clock() {
           <div id="session-adjustments">
             <div id="session-label">Session length</div>
             <div id="session-length">{sessionTime}</div>
-            <button
-              id="session-decrement"
-              onClick={() => console.log("decrement")}
-            >
+            <button id="session-decrement" onClick={() => decrementSession()}>
               Down
             </button>
-            <button
-              id="session-increment"
-              onClick={() => console.log("increment")}
-            >
+            <button id="session-increment" onClick={() => incrementSession()}>
               Up
             </button>
           </div>
           <div id="break-adjustments">
             <div id="break-label">Break length</div>
             <div id="break-length">{breakTime}</div>
-            <button
-              id="break-decrement"
-              onClick={() => console.log("decrementBreak")}
-            >
+            <button id="break-decrement" onClick={() => decrementBreak()}>
               Down
             </button>
-            <button
-              id="break-increment"
-              onClick={() => console.log("incrementBreak")}
-            >
+            <button id="break-increment" onClick={() => incrementBreak()}>
               Up
             </button>
           </div>
         </div>
         {/* <CountdownTimer time={this.state.displayText}/> */}
         <div id="countdown-timer">
-          <div id="time-left">{totalTime}</div>
+          <div id="time-left">
+            {((totalTime - (totalTime % 60)) / 60).toString().padStart(2, 0)}:
+            {(totalTime % 60).toString().padStart(2, 0)}
+          </div>
           <button
             id="start_stop"
-            // onClick={() => (isRunning ? handleStop() : handleStart())}
-            onClick={() => handleStart()}
+            onClick={() => (isRunning ? handleStop() : handleStart())}
           >
             Start/Pause
           </button>
-          <button onClick={() => handleStop()}>stop</button>
-          <div id="timer-label">{inProgress}</div>
+
+          <div id="timer-label">{sessionType}</div>
 
           <audio
             className="alarm"
@@ -113,7 +135,7 @@ function Clock() {
             {" "}
           </audio>
         </div>
-        <button id="reset" onClick={() => console.log("reset")}>
+        <button id="reset" onClick={() => handleReset()}>
           Reset
         </button>
       </div>
