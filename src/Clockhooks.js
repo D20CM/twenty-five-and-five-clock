@@ -2,10 +2,10 @@ import { React, useState, useEffect, useRef } from "react";
 import "./Clock.css";
 
 function Clock() {
-  const [sessionTime, setSessionTime] = useState(10);
+  const [sessionTime, setSessionTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
   const [sessionType, setSessionType] = useState("session");
-  const [totalTime, setTotalTime] = useState(5);
+  const [totalTime, setTotalTime] = useState();
   const [isRunning, setIsRunning] = useState(false);
 
   const intervalRef = useRef();
@@ -70,7 +70,9 @@ function Clock() {
     setIsRunning(false);
     console.log("reset");
     clearInterval(intervalRef.current);
-    setTotalTime(sessionTime * 60);
+    setSessionTime(25);
+    setBreakTime(5);
+    setTotalTime(25 * 60);
     setSessionType("session");
     document.getElementById("time-left").style.color = "";
     document.getElementById("beep").pause();
@@ -82,14 +84,14 @@ function Clock() {
   }
 
   function incrementSession() {
-    setSessionTime((sessionTime) => sessionTime + 1);
+    sessionTime < 60 && setSessionTime((sessionTime) => sessionTime + 1);
   }
   function decrementBreak() {
     breakTime > 1 && setBreakTime((breakTime) => breakTime - 1);
   }
 
   function incrementBreak() {
-    setBreakTime((breakTime) => breakTime + 1);
+    breakTime < 60 && setBreakTime((breakTime) => breakTime + 1);
   }
 
   return (
@@ -123,6 +125,7 @@ function Clock() {
             {((totalTime - (totalTime % 60)) / 60).toString().padStart(2, 0)}:
             {(totalTime % 60).toString().padStart(2, 0)}
           </div>
+          <div>{totalTime}</div>
           <button
             id="start_stop"
             onClick={() => (isRunning ? handleStop() : handleStart())}
