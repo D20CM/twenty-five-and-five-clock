@@ -42,9 +42,9 @@ function Clock() {
         document.getElementById("time-left").style.color = "Red";
       }
     } else {
+      document.getElementById("beep").play();
       console.log("finished");
       clearInterval(intervalRef.current);
-      document.getElementById("beep").play();
       sessionType === "session"
         ? setSessionType("break")
         : setSessionType("session");
