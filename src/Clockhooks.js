@@ -2,14 +2,24 @@ import { React, useState, useEffect, useRef } from "react";
 import "./Clock.css";
 
 function Clock() {
-  const [sessionTime, setSessionTime] = useState(25);
-  const [breakTime, setBreakTime] = useState(5);
+  //DEFAULT VALUES
+  const DEFAULT_SESSION_TIME = 25;
+  const DEFAULT_BREAK_TIME = 5;
+  const ALARM_SOUND_URL =
+    "https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav";
+
+  //STATE & REFS
+  const [sessionTime, setSessionTime] = useState(DEFAULT_SESSION_TIME);
+  const [breakTime, setBreakTime] = useState(DEFAULT_BREAK_TIME);
   const [sessionType, setSessionType] = useState("session");
   const [totalTime, setTotalTime] = useState();
   const [isRunning, setIsRunning] = useState(false);
 
   const intervalRef = useRef();
 
+  //USE EFFECTS
+
+  //MAIN TIMER
   useEffect(() => {
     if (isRunning) {
       const id = setInterval(() => {
@@ -23,23 +33,27 @@ function Clock() {
     };
   });
 
+  //SET TIMERS IN RESPONSE TO USER ADJUSTMENTS AND SESSION SWAPS
   useEffect(() => {
     sessionType === "session"
       ? setTotalTime(sessionTime * 60)
       : setTotalTime(breakTime * 60);
   }, [sessionTime, breakTime, sessionType]);
 
+  //USED ONLY FOR LOGGING IN DEV
   useEffect(() => {
     isRunning
       ? console.log("start " + sessionType)
       : console.log("stop " + sessionType);
   }, [sessionType, isRunning]);
 
+  //ALARM
   function playAlarmSound() {
     console.log("play alarm sound");
     document.getElementById("beep").play();
   }
 
+  //SWAP SESSION
   function swapSession() {
     console.log("swap session");
     clearInterval(intervalRef.current);
@@ -47,10 +61,10 @@ function Clock() {
       ? setSessionType("break")
       : setSessionType("session");
     document.getElementById("time-left").style.color = "";
-
     handleStart();
   }
 
+  //CALLED BY MAIN TIMER EVERY SECOND
   async function decrementTotalTime() {
     if (totalTime === 1) {
       setTotalTime(0);
@@ -65,18 +79,21 @@ function Clock() {
     }
   }
 
+  //START
   function handleStart() {
     if (!isRunning) {
       setIsRunning(true);
     }
   }
 
+  //STOP
   function handleStop() {
     setIsRunning(false);
     console.log("stop");
     clearInterval(intervalRef.current);
   }
 
+  //RESET
   function handleReset() {
     setIsRunning(false);
     console.log("reset");
@@ -90,6 +107,7 @@ function Clock() {
     document.getElementById("beep").currentTime = 0;
   }
 
+  //USER ADJUSTMENTS
   function decrementSession() {
     sessionTime > 1 && setSessionTime((sessionTime) => sessionTime - 1);
   }
@@ -105,6 +123,7 @@ function Clock() {
     breakTime < 60 && setBreakTime((breakTime) => breakTime + 1);
   }
 
+  //RETURN
   return (
     <div id="container">
       <div id="central-block">
@@ -148,7 +167,7 @@ function Clock() {
 
           <audio
             className="alarm"
-            src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+            src={ALARM_SOUND_URL}
             type="audio/wav"
             id="beep"
           >
