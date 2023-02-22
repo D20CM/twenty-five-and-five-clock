@@ -35,22 +35,33 @@ function Clock() {
       : console.log("stop " + sessionType);
   }, [sessionType, isRunning]);
 
-  function decrementTotalTime() {
-    if (totalTime > 0) {
+  function playAlarmSound() {
+    console.log("play alarm sound");
+    document.getElementById("beep").play();
+  }
+
+  function swapSession() {
+    console.log("swap session");
+    clearInterval(intervalRef.current);
+    sessionType === "session"
+      ? setSessionType("break")
+      : setSessionType("session");
+    document.getElementById("time-left").style.color = "";
+
+    handleStart();
+  }
+
+  async function decrementTotalTime() {
+    if (totalTime === 1) {
+      setTotalTime(0);
+      playAlarmSound();
+      console.log("finished");
+      swapSession();
+    } else if (totalTime > 1) {
       setTotalTime((totalTime) => totalTime - 1);
       if (totalTime <= 60) {
         document.getElementById("time-left").style.color = "Red";
       }
-    } else {
-      document.getElementById("beep").play();
-      console.log("finished");
-      clearInterval(intervalRef.current);
-      sessionType === "session"
-        ? setSessionType("break")
-        : setSessionType("session");
-      document.getElementById("time-left").style.color = "";
-
-      handleStart();
     }
   }
 
