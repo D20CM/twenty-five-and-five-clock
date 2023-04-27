@@ -22,29 +22,34 @@ body{
 }
 
 button{
-    border-radius: 20px;
+    border-radius: 0.5em;
     margin: 10px;
     padding: 1em;
-    background-color: darkolivegreen;
+    background-color: rgba(32, 173, 13, 0.558);
     color: white;
     border: none;
+    transition: 0.3s ease all;
+
 } 
 
 button:focus{
     outline: none;
-    box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.781);
-    /* border: none; */
-    /* border:greenyellow; */
+    box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.781);
+}
+
+button:hover{
+    background-color: rgba(14, 191, 14, 0.84);
+    transition: 0.3s ease all;
 }
 
 
 #central-block{
-    border-radius: 5%;
+    border-radius: 0.5em;
     padding: 20px;
     width: 400px;
     max-width: 90vw;
     margin: auto;
-    background-color: darkgray;
+    background-color: rgba(222, 211, 211, 0.407);
     color: white;
    
     border: 2px solid rgb(85, 85, 85);
